@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { autoUpdater } from 'electron-updater'
 
 function createWindow(): void {
   // Create the browser window.
@@ -58,6 +59,26 @@ app.whenReady().then(() => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+
+  autoUpdater.checkForUpdates()
+
+  autoUpdater.on('update-available', () => {
+    const response = require('electron').dialog.showMessageBoxSync({
+      type: 'info',
+      title: 'Update Available',
+      message: 'A new version of the app is available. Do you want to update now?',
+      buttons: ['Update', 'Later']
+    })
+
+    if (response === 0) {
+      // If 'Update' is clicked
+      autoUpdater.downloadUpdate()
+    }
+  })
+
+  autoUpdater.on('update-downloaded', () => {
+    autoUpdater.quitAndInstall()
   })
 })
 

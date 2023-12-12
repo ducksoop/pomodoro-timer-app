@@ -4,7 +4,11 @@
   "description": "A pomodoro timer app that sits on your desktop.",
   "main": "./out/main/index.js",
   "author": "Joshua Torres",
-  "homepage": "https://www.electronjs.org",
+  "repository": "https://github.com/ducksoop/pomodoro-timer-app",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -20,15 +24,34 @@
     "build:linux": "electron-vite build && electron-builder --linux --config"
   },
   "build": {
-    "appId": "com.ducksoop.pomodorotimerapp",
+    "appId": "com.yourdomain.pomodorotimer",
     "productName": "Pomodoro Timer App",
-    "win": {
-      "target": "nsis"
-    },
     "directories": {
       "output": "dist"
+    },
+    "publish": {
+      "provider": "github",
+      "repo": "pomodoro-timer-app", 
+      "owner": "ducksoop", 
+      "releaseType": "release"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icons/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icons/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icons"
     }
   },
+  
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
