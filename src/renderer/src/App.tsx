@@ -1,8 +1,8 @@
 const App = (): JSX.Element => {
   return (
-    <div>
-      <h1>Hello, World!</h1>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus officiis a, quos ex hic deserunt numquam inventore eveniet, laudantium assumenda quaerat, maiores minus consequatur sit libero voluptatem deleniti dicta nostrum!</p>
+    <div className="bg-slate-900">
+      <h1 className="text-red-500 text-4xl">Hello, World!</h1>
+      <p className="text-white">Lorem ipsum dolor sit amet.</p>
     </div>
   )
 }
