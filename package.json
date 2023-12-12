@@ -1,9 +1,9 @@
 {
   "name": "pomodoro-timer-app",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "A pomodoro timer app that sits on your desktop.",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "Joshua Torres",
   "homepage": "https://www.electronjs.org",
   "scripts": {
     "format": "prettier --write .",
@@ -19,11 +19,21 @@
     "build:mac": "electron-vite build && electron-builder --mac --config",
     "build:linux": "electron-vite build && electron-builder --linux --config"
   },
+  "build": {
+    "appId": "com.ducksoop.pomodorotimerapp",
+    "productName": "Pomodoro Timer App",
+    "win": {
+      "target": "nsis"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
     "daisyui": "^4.4.19",
-    "electron-updater": "^6.1.1"
+    "electron-updater": "^6.1.7"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",
@@ -35,7 +45,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "autoprefixer": "^10.4.16",
     "electron": "^25.6.0",
-    "electron-builder": "^24.6.3",
+    "electron-builder": "^24.9.1",
     "electron-vite": "^1.0.27",
     "eslint": "^8.47.0",
     "eslint-plugin-react": "^7.33.2",
