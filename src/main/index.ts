@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, dialog, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -61,25 +61,29 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdates();
 
   autoUpdater.on('update-available', () => {
-    const response = require('electron').dialog.showMessageBoxSync({
+    dialog.showMessageBox({
       type: 'info',
       title: 'Update Available',
-      message: 'A new version of the app is available. Do you want to update now?',
+      message: 'A new version is available. Do you want to update now?',
       buttons: ['Update', 'Later']
-    })
-
-    if (response === 0) {
-      // If 'Update' is clicked
-      autoUpdater.downloadUpdate()
-    }
-  })
+    }).then((buttonIndex) => {
+      if (buttonIndex.response === 0) { // If user chooses 'Update'
+        autoUpdater.downloadUpdate();
+      }
+    });
+  });
 
   autoUpdater.on('update-downloaded', () => {
-    autoUpdater.quitAndInstall()
-  })
+    dialog.showMessageBox({
+      title: 'Install Updates',
+      message: 'Updates downloaded, application will be quit for update...'
+    }).then(() => {
+      autoUpdater.quitAndInstall();
+    });
+  });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
