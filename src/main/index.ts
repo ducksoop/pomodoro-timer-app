@@ -61,29 +61,48 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  autoUpdater.checkForUpdates();
+  autoUpdater.checkForUpdates()
 
   autoUpdater.on('update-available', () => {
-    dialog.showMessageBox({
-      type: 'info',
-      title: 'Update Available',
-      message: 'A new version is available. Do you want to update now?',
-      buttons: ['Update', 'Later']
-    }).then((buttonIndex) => {
-      if (buttonIndex.response === 0) { // If user chooses 'Update'
-        autoUpdater.downloadUpdate();
-      }
-    });
-  });
+    // dialog
+    //   .showMessageBox({
+    //     type: 'info',
+    //     title: 'Update Available',
+    //     message: 'A new version is available. Do you want to update now?',
+    //     buttons: ['Update', 'Later']
+    //   })
+    //   .then((buttonIndex) => {
+    //     if (buttonIndex.response === 0) {
+    //       // If user chooses 'Update'
+    //       autoUpdater.downloadUpdate()
+    //     }
+    //   })
+  })
 
   autoUpdater.on('update-downloaded', () => {
-    dialog.showMessageBox({
-      title: 'Install Updates',
-      message: 'Updates downloaded, application will be quit for update...'
-    }).then(() => {
-      autoUpdater.quitAndInstall();
-    });
-  });
+    dialog
+      .showMessageBox({
+        title: 'Install Updates',
+        message: 'Updates downloaded, application will be quit for update...'
+      })
+      .then(() => {
+        autoUpdater.quitAndInstall()
+      })
+  })
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    let log_message = 'Download speed: ' + progressObj.bytesPerSecond
+    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
+    log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+    console.log(log_message)
+  })
+
+  autoUpdater.on('error', (error) => {
+    dialog.showErrorBox(
+      'Update Error',
+      error == null ? 'unknown' : (error.stack || error).toString()
+    )
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
